@@ -1,24 +1,982 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silaek Memorial System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; font-family: 'Sarabun', sans-serif; background-color: #2c3e50; }
-        .header-bar { background-color: #2c3e50; color: white; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.3); position: absolute; top: 0; left: 0; right: 0; z-index: 1000; }
-        .iframe-container { position: absolute; top: 50px; left: 0; bottom: 0; right: 0; width: 100%; height: calc(100% - 50px); border: none; }
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shilaek Church Burial System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --line:#dbe4ee;
+      --text:#183247;
+      --muted:#6e7f91;
+      --primary:#1f4e78;
+      --primary-2:#2d6b9f;
+      --success:#198754;
+      --warn:#d97706;
+      --danger:#c0392b;
+      --shadow:0 10px 30px rgba(23,42,58,.08);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:"Sarabun",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:280px 1fr;
+    }
+
+    .sidebar{
+      background:linear-gradient(180deg,var(--primary),#153754);
+      color:#fff;
+      padding:22px 18px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:22px;
+    }
+
+    .brand-badge{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:rgba(255,255,255,.15);
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      font-weight:700;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      line-height:1.3;
+    }
+
+    .brand p{
+      margin:2px 0 0;
+      font-size:12px;
+      color:rgba(255,255,255,.8);
+    }
+
+    .userbox{
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:14px;
+      margin-bottom:16px;
+    }
+
+    .userbox .name{
+      font-weight:700;
+      font-size:15px;
+    }
+
+    .userbox .role{
+      font-size:12px;
+      opacity:.85;
+      margin-top:4px;
+    }
+
+    .menu{
+      display:grid;
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .menu button{
+      width:100%;
+      border:none;
+      background:transparent;
+      color:#fff;
+      text-align:left;
+      padding:12px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    .menu button:hover,
+    .menu button.active{
+      background:rgba(255,255,255,.14);
+    }
+
+    .main{
+      padding:24px;
+      min-width:0;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .topbar h2{
+      margin:0;
+      font-size:24px;
+    }
+
+    .muted{
+      color:var(--muted);
+    }
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+
+    .grid-4{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .stat .label{
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:8px;
+    }
+
+    .stat .value{
+      font-size:30px;
+      font-weight:700;
+      color:var(--primary);
+    }
+
+    input, select, textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:12px 14px;
+      font-family:inherit;
+      font-size:14px;
+      outline:none;
+    }
+
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--primary-2);
+      box-shadow:0 0 0 3px rgba(31,78,120,.08);
+    }
+
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:11px 16px;
+      cursor:pointer;
+      font-family:inherit;
+      font-weight:600;
+      transition:.2s ease;
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+
+    .btn-primary:hover{background:var(--primary-2)}
+    .btn-light{
+      background:#eef4fa;
+      color:var(--primary);
+    }
+    .btn-danger{
+      background:var(--danger);
+      color:#fff;
+    }
+
+    .section{
+      display:none;
+    }
+
+    .section.active{
+      display:block;
+    }
+
+    .section-title{
+      margin:0 0 12px;
+      font-size:18px;
+    }
+
+    .table-wrap{
+      width:100%;
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:16px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:900px;
+      background:#fff;
+    }
+
+    th, td{
+      padding:12px 12px;
+      border-bottom:1px solid #edf2f7;
+      text-align:left;
+      font-size:14px;
+      vertical-align:top;
+    }
+
+    th{
+      background:#f7fafc;
+      color:#425466;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .pill.green{background:#e8f7ee;color:#198754}
+    .pill.orange{background:#fff4e5;color:#d97706}
+    .pill.red{background:#fdecec;color:#c0392b}
+    .pill.blue{background:#eaf3fb;color:#1f4e78}
+    .pill.gray{background:#eef2f6;color:#66788a}
+
+    .login-wrap{
+      max-width:460px;
+      margin:7vh auto;
+    }
+
+    .login-title{
+      text-align:center;
+      margin-bottom:16px;
+    }
+
+    .login-title h1{
+      margin:0;
+      font-size:28px;
+      color:var(--primary);
+    }
+
+    .login-title p{
+      margin:8px 0 0;
+      color:var(--muted);
+    }
+
+    .form-grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .detail-box{
+      display:grid;
+      gap:12px;
+    }
+
+    .detail-row{
+      display:grid;
+      grid-template-columns:180px 1fr;
+      gap:10px;
+      padding:10px 0;
+      border-bottom:1px dashed #e2e8f0;
+    }
+
+    .detail-row .k{
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    .empty{
+      padding:24px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .loading{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    @media (max-width: 1100px){
+      .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .grid-2{grid-template-columns:1fr}
+    }
+
+    @media (max-width: 860px){
+      .app{
+        grid-template-columns:1fr;
+      }
+      .sidebar{
+        position:relative;
+        height:auto;
+        border-bottom-left-radius:20px;
+        border-bottom-right-radius:20px;
+      }
+      .main{
+        padding:16px;
+      }
+      .grid-4{
+        grid-template-columns:1fr;
+      }
+      .detail-row{
+        grid-template-columns:1fr;
+        gap:4px;
+      }
+      table{
+        min-width:760px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="header-bar">
-        <div style="font-weight: 600;">⛪ SILAEK MEMORIAL SYSTEM</div>
-        <div style="font-size: 0.8rem; opacity: 0.8;">คริสตจักรศิลาเอก</div>
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-title">
+      <h1>ระบบผ่อนชำระสุสานคริสตจักร</h1>
+      <p>Shilaek Church Burial Installment System</p>
     </div>
-    <div class="iframe-container">
-        <iframe src="https://script.google.com/macros/s/AKfycbxN4xb63kHDO3gjA-7G7v-PPyaoSk-5GeRtNhByaP6qO0UKbISbJITzxxBH87V1yEt6/exec"></iframe>
+
+    <div class="card">
+      <div class="form-grid">
+        <div>
+          <label>อีเมลผู้ใช้งาน</label>
+          <input id="loginEmail" type="email" placeholder="เช่น admin@shilaekchurch.org" />
+        </div>
+        <button class="btn btn-primary" onclick="login()">เข้าสู่ระบบ</button>
+        <div class="muted">ตัวอย่างทดสอบ: admin@shilaekchurch.org</div>
+        <div id="loginMsg" class="loading"></div>
+      </div>
     </div>
+  </div>
+
+  <div id="appShell" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">⛪</div>
+        <div>
+          <h1 id="churchName">คริสตจักรศิลาเอก</h1>
+          <p>Burial Installment System</p>
+        </div>
+      </div>
+
+      <div class="userbox">
+        <div class="name" id="sidebarUserName">-</div>
+        <div class="role" id="sidebarUserRole">-</div>
+      </div>
+
+      <div class="menu">
+        <button class="active" data-section="dashboardSection" onclick="showSection('dashboardSection', this)">ภาพรวมระบบ</button>
+        <button data-section="membersSection" onclick="showSection('membersSection', this); loadMembers()">สมาชิก</button>
+        <button data-section="plotsSection" onclick="showSection('plotsSection', this); loadPlots()">หลุมสุสาน</button>
+        <button data-section="contractsSection" onclick="showSection('contractsSection', this); loadContracts()">สัญญา</button>
+        <button data-section="contractDetailSection" onclick="showSection('contractDetailSection', this)">รายละเอียดสัญญา</button>
+        <button onclick="logout()">ออกจากระบบ</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h2 id="pageTitle">ภาพรวมระบบ</h2>
+          <div class="muted" id="pageSubtitle">ข้อมูลล่าสุดจาก Google Apps Script</div>
+        </div>
+        <div class="toolbar">
+          <button class="btn btn-light" onclick="loadDashboard()">รีเฟรช Dashboard</button>
+          <button class="btn btn-light" onclick="loadBootstrap()">โหลดข้อมูลตั้งต้น</button>
+        </div>
+      </div>
+
+      <section id="dashboardSection" class="section active">
+        <div class="grid-4">
+          <div class="card stat">
+            <div class="label">จำนวนสมาชิก</div>
+            <div class="value" id="statMembers">0</div>
+          </div>
+          <div class="card stat">
+            <div class="label">จำนวนหลุมทั้งหมด</div>
+            <div class="value" id="statPlots">0</div>
+          </div>
+          <div class="card stat">
+            <div class="label">สัญญาที่เปิดอยู่</div>
+            <div class="value" id="statOpenContracts">0</div>
+          </div>
+          <div class="card stat">
+            <div class="label">ยอดคงเหลือรวม</div>
+            <div class="value" id="statOutstanding">0</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="section-title">สถานะระบบ</h3>
+            <div id="systemStatus" class="detail-box"></div>
+          </div>
+
+          <div class="card">
+            <h3 class="section-title">ข้อมูลสรุป</h3>
+            <div id="summaryBox" class="detail-box"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="membersSection" class="section">
+        <div class="card" style="margin-bottom:16px;">
+          <div class="grid-2">
+            <div>
+              <label>ค้นหาสมาชิก</label>
+              <input id="memberSearch" placeholder="ค้นหาชื่อ, รหัส, เบอร์โทร, อีเมล" />
+            </div>
+            <div style="display:flex;align-items:end;gap:10px;">
+              <button class="btn btn-primary" onclick="loadMembers()">ค้นหา</button>
+              <button class="btn btn-light" onclick="clearMemberSearch()">ล้าง</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">รายการสมาชิก</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>รหัส</th>
+                  <th>ชื่อ</th>
+                  <th>โทรศัพท์</th>
+                  <th>ความเกี่ยวข้อง</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
+              <tbody id="membersTbody">
+                <tr><td colspan="5" class="empty">ยังไม่มีข้อมูล</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="plotsSection" class="section">
+        <div class="card" style="margin-bottom:16px;">
+          <div class="grid-2">
+            <div>
+              <label>กรองสถานะหลุม</label>
+              <select id="plotStatusFilter">
+                <option value="">ทั้งหมด</option>
+                <option value="AVAILABLE">AVAILABLE</option>
+                <option value="OCCUPIED">OCCUPIED</option>
+                <option value="RESERVED">RESERVED</option>
+                <option value="CLOSED">CLOSED</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:end;">
+              <button class="btn btn-primary" onclick="loadPlots()">โหลดข้อมูล</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">รายการหลุมสุสาน</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Plot ID</th>
+                  <th>รหัสหลุม</th>
+                  <th>โซน</th>
+                  <th>ตำแหน่ง</th>
+                  <th>ราคาเริ่มต้น</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
+              <tbody id="plotsTbody">
+                <tr><td colspan="6" class="empty">ยังไม่มีข้อมูล</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="contractsSection" class="section">
+        <div class="card" style="margin-bottom:16px;">
+          <div class="grid-2">
+            <div>
+              <label>กรองสถานะสัญญา</label>
+              <select id="contractStatusFilter">
+                <option value="">ทั้งหมด</option>
+                <option value="OPEN">OPEN</option>
+                <option value="CLOSED">CLOSED</option>
+                <option value="OVERDUE">OVERDUE</option>
+                <option value="CANCELLED">CANCELLED</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:end;">
+              <button class="btn btn-primary" onclick="loadContracts()">โหลดข้อมูล</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="section-title">รายการสัญญา</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>เลขที่สัญญา</th>
+                  <th>Member ID</th>
+                  <th>Plot ID</th>
+                  <th>ราคาตกลง</th>
+                  <th>จ่ายแล้ว</th>
+                  <th>คงเหลือ</th>
+                  <th>สถานะ</th>
+                  <th>ดูรายละเอียด</th>
+                </tr>
+              </thead>
+              <tbody id="contractsTbody">
+                <tr><td colspan="8" class="empty">ยังไม่มีข้อมูล</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="contractDetailSection" class="section">
+        <div class="grid-2">
+          <div class="card">
+            <div style="display:flex;gap:10px;align-items:end;margin-bottom:14px;flex-wrap:wrap;">
+              <div style="flex:1 1 260px;">
+                <label>ระบุ Contract ID</label>
+                <input id="contractIdInput" placeholder="เช่น CT00001" />
+              </div>
+              <button class="btn btn-primary" onclick="loadContractDetailByInput()">โหลดรายละเอียด</button>
+            </div>
+
+            <h3 class="section-title">ข้อมูลสัญญา</h3>
+            <div id="contractDetailBox" class="detail-box">
+              <div class="empty">ยังไม่ได้เลือกสัญญา</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="section-title">ประวัติการชำระ</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Receipt</th>
+                    <th>วันที่ชำระ</th>
+                    <th>ผู้ชำระ</th>
+                    <th>จำนวนเงิน</th>
+                    <th>คงเหลือหลังชำระ</th>
+                  </tr>
+                </thead>
+                <tbody id="contractPaymentsTbody">
+                  <tr><td colspan="5" class="empty">ยังไม่มีข้อมูล</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxN4xb63kHDO3gjA-7G7v-PPyaoSk-5GeRtNhByaP6qO0UKbISbJITzxxBH87V1yEt6/exec";
+
+    const state = {
+      user: null,
+      config: {},
+      dashboard: null
+    };
+
+    function jsonp(url, params = {}) {
+      return new Promise((resolve, reject) => {
+        const callbackName = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+        const script = document.createElement("script");
+        const query = new URLSearchParams({ ...params, callback: callbackName });
+
+        window[callbackName] = function(response) {
+          cleanup();
+          resolve(response);
+        };
+
+        function cleanup() {
+          delete window[callbackName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        script.onerror = function() {
+          cleanup();
+          reject(new Error("JSONP request failed"));
+        };
+
+        script.src = `${url}?${query.toString()}`;
+        document.body.appendChild(script);
+
+        setTimeout(() => {
+          if (window[callbackName]) {
+            cleanup();
+            reject(new Error("Request timeout"));
+          }
+        }, 15000);
+      });
+    }
+
+    async function apiGet(mode, params = {}) {
+      const res = await jsonp(WEB_APP_URL, { mode, ...params });
+      if (!res || !res.ok) {
+        throw new Error(res?.error || "Unknown API error");
+      }
+      return res.data;
+    }
+
+    function baht(n) {
+      const num = Number(n || 0);
+      return num.toLocaleString("th-TH");
+    }
+
+    function formatDate(v) {
+      if (!v) return "-";
+      const d = new Date(v);
+      if (isNaN(d.getTime())) return String(v);
+      return d.toLocaleDateString("th-TH");
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function pill(text, type = "gray") {
+      return `<span class="pill ${type}">${escapeHtml(text)}</span>`;
+    }
+
+    function statusPill(status) {
+      const s = String(status || "").toUpperCase();
+      if (["ACTIVE","AVAILABLE","COMPLETED","APPROVED"].includes(s)) return pill(s, "green");
+      if (["OPEN","TRANSFERRED","OCCUPIED"].includes(s)) return pill(s, "blue");
+      if (["OVERDUE","RESERVED"].includes(s)) return pill(s, "orange");
+      if (["CANCELLED","CLOSED","INACTIVE"].includes(s)) return pill(s, "red");
+      return pill(s || "-", "gray");
+    }
+
+    function showSection(id, btn = null) {
+      document.querySelectorAll(".section").forEach(el => el.classList.remove("active"));
+      const section = document.getElementById(id);
+      if (section) section.classList.add("active");
+
+      document.querySelectorAll(".menu button[data-section]").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      const titles = {
+        dashboardSection: ["ภาพรวมระบบ", "สรุปข้อมูลล่าสุดของระบบ"],
+        membersSection: ["สมาชิก", "รายการสมาชิกและผู้ถือสิทธิ์"],
+        plotsSection: ["หลุมสุสาน", "รายการหลุมและสถานะปัจจุบัน"],
+        contractsSection: ["สัญญา", "รายการสัญญาทั้งหมด"],
+        contractDetailSection: ["รายละเอียดสัญญา", "ตรวจสอบข้อมูลสัญญาและประวัติการชำระ"]
+      };
+
+      const found = titles[id] || ["ระบบ", ""];
+      document.getElementById("pageTitle").textContent = found[0];
+      document.getElementById("pageSubtitle").textContent = found[1];
+    }
+
+    async function login() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const msg = document.getElementById("loginMsg");
+      msg.textContent = "กำลังตรวจสอบผู้ใช้งาน...";
+
+      try {
+        const data = await apiGet("login", { email });
+        state.user = data.user;
+
+        document.getElementById("sidebarUserName").textContent = data.user.Full_Name || "-";
+        document.getElementById("sidebarUserRole").textContent = `${data.user.Role || "-"} • ${data.user.Email || "-"}`;
+
+        document.getElementById("loginScreen").classList.add("hidden");
+        document.getElementById("appShell").classList.remove("hidden");
+
+        await loadBootstrap();
+        await loadDashboard();
+
+        msg.textContent = "";
+      } catch (err) {
+        msg.textContent = "เข้าสู่ระบบไม่สำเร็จ: " + err.message;
+      }
+    }
+
+    function logout() {
+      state.user = null;
+      document.getElementById("appShell").classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
+      document.getElementById("loginMsg").textContent = "";
+      document.getElementById("loginEmail").value = "";
+    }
+
+    async function loadBootstrap() {
+      try {
+        const data = await apiGet("getBootstrap");
+        state.config = data.config || {};
+        document.getElementById("churchName").textContent = state.config.Church_Name || "คริสตจักรศิลาเอก";
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadDashboard() {
+      try {
+        const statusEl = document.getElementById("systemStatus");
+        const summaryEl = document.getElementById("summaryBox");
+
+        statusEl.innerHTML = `<div class="loading">กำลังโหลดข้อมูล...</div>`;
+        summaryEl.innerHTML = `<div class="loading">กำลังโหลดข้อมูล...</div>`;
+
+        const ping = await apiGet("ping");
+        const dash = await apiGet("getDashboard");
+        state.dashboard = dash.summary || {};
+
+        document.getElementById("statMembers").textContent = baht(state.dashboard.membersCount);
+        document.getElementById("statPlots").textContent = baht(state.dashboard.plotsCount);
+        document.getElementById("statOpenContracts").textContent = baht(state.dashboard.activeContracts);
+        document.getElementById("statOutstanding").textContent = baht(state.dashboard.totalOutstanding);
+
+        statusEl.innerHTML = `
+          <div class="detail-row"><div class="k">ชื่อระบบ</div><div>${escapeHtml(ping.app || "-")}</div></div>
+          <div class="detail-row"><div class="k">สถานะ</div><div>${statusPill(ping.status || "-")}</div></div>
+          <div class="detail-row"><div class="k">Spreadsheet ID</div><div>${escapeHtml(ping.spreadsheetId || "-")}</div></div>
+          <div class="detail-row"><div class="k">ผู้ใช้งานปัจจุบัน</div><div>${escapeHtml(state.user?.Full_Name || "-")}</div></div>
+        `;
+
+        summaryEl.innerHTML = `
+          <div class="detail-row"><div class="k">หลุมว่าง</div><div>${baht(state.dashboard.availablePlots)}</div></div>
+          <div class="detail-row"><div class="k">หลุมที่มีผู้ถือสิทธิ์แล้ว</div><div>${baht(state.dashboard.occupiedPlots)}</div></div>
+          <div class="detail-row"><div class="k">สัญญาทั้งหมด</div><div>${baht(state.dashboard.contractsCount)}</div></div>
+          <div class="detail-row"><div class="k">สัญญาปิดครบแล้ว</div><div>${baht(state.dashboard.completedContracts)}</div></div>
+          <div class="detail-row"><div class="k">ยอดรับชำระรวม</div><div>${baht(state.dashboard.totalPaid)} บาท</div></div>
+          <div class="detail-row"><div class="k">ยอดคงเหลือรวม</div><div>${baht(state.dashboard.totalOutstanding)} บาท</div></div>
+        `;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("systemStatus").innerHTML = `<div class="empty">โหลดข้อมูลไม่สำเร็จ: ${escapeHtml(err.message)}</div>`;
+        document.getElementById("summaryBox").innerHTML = `<div class="empty">โหลดข้อมูลไม่สำเร็จ</div>`;
+      }
+    }
+
+    async function loadMembers() {
+      try {
+        const q = document.getElementById("memberSearch").value.trim();
+        const data = await apiGet("getMembers", { q });
+        const rows = data.rows || [];
+        const tbody = document.getElementById("membersTbody");
+
+        if (!rows.length) {
+          tbody.innerHTML = `<tr><td colspan="5" class="empty">ไม่พบข้อมูลสมาชิก</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = rows.map(r => `
+          <tr>
+            <td>${escapeHtml(r.Member_ID || "-")}</td>
+            <td>
+              <strong>${escapeHtml(r.Full_Name_Thai || "-")}</strong><br>
+              <span class="muted">${escapeHtml(r.Full_Name_English || "")}</span>
+            </td>
+            <td>${escapeHtml(r.Phone || "-")}</td>
+            <td>${escapeHtml(r.Church_Relation || "-")}</td>
+            <td>${statusPill(r.Status || "-")}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        document.getElementById("membersTbody").innerHTML = `<tr><td colspan="5" class="empty">โหลดข้อมูลไม่สำเร็จ: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function clearMemberSearch() {
+      document.getElementById("memberSearch").value = "";
+      loadMembers();
+    }
+
+    async function loadPlots() {
+      try {
+        const status = document.getElementById("plotStatusFilter").value;
+        const data = await apiGet("getPlots", { status });
+        const rows = data.rows || [];
+        const tbody = document.getElementById("plotsTbody");
+
+        if (!rows.length) {
+          tbody.innerHTML = `<tr><td colspan="6" class="empty">ไม่พบข้อมูลหลุมสุสาน</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = rows.map(r => `
+          <tr>
+            <td>${escapeHtml(r.Plot_ID || "-")}</td>
+            <td><strong>${escapeHtml(r.Plot_Code || "-")}</strong></td>
+            <td>${escapeHtml(r.Section_Name || "-")}</td>
+            <td>
+              ${escapeHtml(r.Block_Name || "-")}<br>
+              <span class="muted">${escapeHtml(r.Location_Description || "")}</span>
+            </td>
+            <td>${baht(r.Default_Price)} บาท</td>
+            <td>${statusPill(r.Current_Status || "-")}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        document.getElementById("plotsTbody").innerHTML = `<tr><td colspan="6" class="empty">โหลดข้อมูลไม่สำเร็จ: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    async function loadContracts() {
+      try {
+        const status = document.getElementById("contractStatusFilter").value;
+        const data = await apiGet("getContracts", { status });
+        const rows = data.rows || [];
+        const tbody = document.getElementById("contractsTbody");
+
+        if (!rows.length) {
+          tbody.innerHTML = `<tr><td colspan="8" class="empty">ไม่พบข้อมูลสัญญา</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = rows.map(r => `
+          <tr>
+            <td><strong>${escapeHtml(r.Contract_ID || "-")}</strong></td>
+            <td>${escapeHtml(r.Member_ID || "-")}</td>
+            <td>${escapeHtml(r.Plot_ID || "-")}</td>
+            <td>${baht(r.Agreed_Price)} บาท</td>
+            <td>${baht(r.Total_Paid)} บาท</td>
+            <td>${baht(r.Outstanding_Balance)} บาท</td>
+            <td>${statusPill(r.Contract_Status || "-")}</td>
+            <td>
+              <button class="btn btn-light" onclick="openContractDetail('${escapeHtml(r.Contract_ID || "")}')">เปิดดู</button>
+            </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        document.getElementById("contractsTbody").innerHTML = `<tr><td colspan="8" class="empty">โหลดข้อมูลไม่สำเร็จ: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+
+    function openContractDetail(contractId) {
+      document.getElementById("contractIdInput").value = contractId;
+      document.querySelectorAll(".menu button[data-section]").forEach(b => b.classList.remove("active"));
+      const btn = document.querySelector('.menu button[data-section="contractDetailSection"]');
+      if (btn) btn.classList.add("active");
+      showSection("contractDetailSection");
+      loadContractDetail(contractId);
+    }
+
+    function loadContractDetailByInput() {
+      const contractId = document.getElementById("contractIdInput").value.trim();
+      if (!contractId) return;
+      loadContractDetail(contractId);
+    }
+
+    async function loadContractDetail(contractId) {
+      try {
+        const data = await apiGet("getContractDetail", { contractId });
+        const box = document.getElementById("contractDetailBox");
+        const tbody = document.getElementById("contractPaymentsTbody");
+
+        const c = data.contract || {};
+        const m = data.member || {};
+        const h = data.rightsHolder || {};
+        const p = data.plot || {};
+        const payments = data.payments || [];
+
+        box.innerHTML = `
+          <div class="detail-row"><div class="k">เลขที่สัญญา</div><div><strong>${escapeHtml(c.Contract_ID || "-")}</strong></div></div>
+          <div class="detail-row"><div class="k">เจ้าของสัญญาเดิม</div><div>${escapeHtml(m.Full_Name_Thai || "-")}</div></div>
+          <div class="detail-row"><div class="k">ผู้ถือสิทธิ์ปัจจุบัน</div><div>${escapeHtml(h.Full_Name_Thai || c.Rights_Holder_Name || "-")}</div></div>
+          <div class="detail-row"><div class="k">Plot</div><div>${escapeHtml(p.Plot_Code || c.Plot_ID || "-")} / ${escapeHtml(p.Section_Name || "-")}</div></div>
+          <div class="detail-row"><div class="k">รูปแบบ</div><div>${escapeHtml(c.Contract_Type || "-")} / ${escapeHtml(c.Payment_Mode || "-")}</div></div>
+          <div class="detail-row"><div class="k">ราคาตกลง</div><div>${baht(c.Agreed_Price)} บาท</div></div>
+          <div class="detail-row"><div class="k">ส่วนลด</div><div>${baht(c.Discount_Amount)} บาท</div></div>
+          <div class="detail-row"><div class="k">ราคาสุทธิ</div><div>${baht(c.Net_Amount)} บาท</div></div>
+          <div class="detail-row"><div class="k">เงินดาวน์</div><div>${baht(c.Down_Payment)} บาท</div></div>
+          <div class="detail-row"><div class="k">จ่ายแล้วรวม</div><div>${baht(c.Total_Paid)} บาท</div></div>
+          <div class="detail-row"><div class="k">ยอดคงเหลือ</div><div>${baht(c.Outstanding_Balance)} บาท</div></div>
+          <div class="detail-row"><div class="k">วันที่ตกลง</div><div>${formatDate(c.Agreement_Date)}</div></div>
+          <div class="detail-row"><div class="k">กำหนดงวดแรก</div><div>${formatDate(c.First_Due_Date)}</div></div>
+          <div class="detail-row"><div class="k">กำหนดงวดสุดท้าย</div><div>${formatDate(c.Last_Due_Date)}</div></div>
+          <div class="detail-row"><div class="k">สถานะสิทธิ์</div><div>${statusPill(c.Rights_Status || "-")}</div></div>
+          <div class="detail-row"><div class="k">สถานะสัญญา</div><div>${statusPill(c.Contract_Status || "-")}</div></div>
+          <div class="detail-row"><div class="k">หมายเหตุ</div><div>${escapeHtml(c.Notes || "-")}</div></div>
+        `;
+
+        if (!payments.length) {
+          tbody.innerHTML = `<tr><td colspan="5" class="empty">ยังไม่มีประวัติการชำระ</td></tr>`;
+        } else {
+          tbody.innerHTML = payments.map(r => `
+            <tr>
+              <td>${escapeHtml(r.Receipt_No || "-")}</td>
+              <td>${formatDate(r.Payment_Date)}</td>
+              <td>
+                <strong>${escapeHtml(r.Payer_Name || "-")}</strong><br>
+                <span class="muted">${escapeHtml(r.Payer_Relation || "")}</span>
+              </td>
+              <td>${baht(r.Payment_Amount)} บาท</td>
+              <td>${baht(r.Balance_After_Payment)} บาท</td>
+            </tr>
+          `).join("");
+        }
+
+        showSection("contractDetailSection");
+      } catch (err) {
+        document.getElementById("contractDetailBox").innerHTML = `<div class="empty">โหลดรายละเอียดไม่สำเร็จ: ${escapeHtml(err.message)}</div>`;
+        document.getElementById("contractPaymentsTbody").innerHTML = `<tr><td colspan="5" class="empty">โหลดข้อมูลไม่สำเร็จ</td></tr>`;
+      }
+    }
+
+    document.getElementById("loginEmail").addEventListener("keydown", function(e){
+      if (e.key === "Enter") login();
+    });
+  </script>
 </body>
 </html>
