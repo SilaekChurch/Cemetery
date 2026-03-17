@@ -38,7 +38,7 @@
       padding:24px;
     }
     .login-card{
-      width:min(100%,480px);
+      width:min(100%,520px);
       background:var(--card);
       border:1px solid var(--line);
       border-radius:24px;
@@ -52,7 +52,7 @@
     .title h1{
       margin:0;
       color:var(--primary);
-      font-size:34px;
+      font-size:32px;
     }
     .title p{
       margin:8px 0 0;
@@ -98,6 +98,7 @@
       padding:12px;
       font-size:14px;
       color:#52677d;
+      line-height:1.8;
     }
 
     .app{
@@ -302,8 +303,8 @@
 
       <div class="stack">
         <div>
-          <label>อีเมล</label>
-          <input id="loginEmail" type="email" placeholder="เช่น admin@shilaekchurch.org">
+          <label>อีเมล (Admin/Staff) หรือ รหัสสมาชิก (Member)</label>
+          <input id="loginIdentifier" type="text" placeholder="เช่น admin@shilaekchurch.org หรือ MB00001">
         </div>
 
         <div>
@@ -316,7 +317,9 @@
         <div class="demo">
           Admin: admin@shilaekchurch.org / 123456<br>
           Staff: staff@shilaekchurch.org / 123456<br>
-          Member: member1@shilaekchurch.org / 123456
+          Member: MB00001 / 111111<br>
+          Member: MB00002 / 222222<br>
+          Member: MB00003 / 333333
         </div>
 
         <div id="loginMsg" class="msg"></div>
@@ -362,7 +365,7 @@
           <div id="pageSubtitle" class="subtitle">-</div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button id="refreshBtn" class="btn btn-light" onclick="refreshCurrent()">รีเฟรช</button>
+          <button class="btn btn-light" onclick="refreshCurrent()">รีเฟรช</button>
         </div>
       </div>
 
@@ -416,7 +419,7 @@
               <thead>
                 <tr>
                   <th>รูป</th>
-                  <th>รหัส</th>
+                  <th>รหัสสมาชิก</th>
                   <th>ชื่อ</th>
                   <th>อีเมล</th>
                   <th>เบอร์</th>
@@ -557,7 +560,6 @@
               <h3 id="memberNameText" style="margin:8px 0 0;">-</h3>
               <div id="memberCodeText" class="subtitle">-</div>
             </div>
-
             <div id="memberInfoBox" class="detail" style="margin-top:14px;"></div>
           </div>
 
@@ -590,7 +592,7 @@
   </div>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxt5peuSXYn51y69NOTKvwRqciSG8kT22_2B3U3KxiID3lIsePE4yK7nWesyLVnNfHO/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxN4xb63kHDO3gjA-7G7v-PPyaoSk-5GeRtNhByaP6qO0UKbISbJITzxxBH87V1yEt6/exec";
 
     const state = {
       user: null,
@@ -662,7 +664,7 @@
       const s = String(status || "-").toUpperCase();
       let cls = "gray";
       if (["ACTIVE","AVAILABLE","COMPLETED"].includes(s)) cls = "green";
-      else if (["OPEN","OCCUPIED"].includes(s)) cls = "blue";
+      else if (["OPEN","OCCUPIED","DONOR"].includes(s)) cls = "blue";
       else if (["OVERDUE","RESERVED"].includes(s)) cls = "orange";
       else if (["CLOSED","CANCELLED","INACTIVE"].includes(s)) cls = "red";
       return `<span class="pill ${cls}">${escapeHtml(s)}</span>`;
@@ -697,13 +699,13 @@
     }
 
     async function login() {
-      const email = document.getElementById("loginEmail").value.trim();
+      const identifier = document.getElementById("loginIdentifier").value.trim();
       const password = document.getElementById("loginPassword").value.trim();
       const msg = document.getElementById("loginMsg");
       msg.textContent = "กำลังเข้าสู่ระบบ...";
 
       try {
-        const data = await apiGet("login", { email, password });
+        const data = await apiGet("login", { identifier, password });
         state.user = data.sessionUser || null;
         state.linkedMember = data.linkedMember || null;
 
@@ -741,6 +743,7 @@
       document.getElementById("appShell").classList.add("hidden");
       document.getElementById("loginPage").classList.remove("hidden");
       document.getElementById("loginMsg").textContent = "";
+      document.getElementById("loginIdentifier").value = "";
       document.getElementById("loginPassword").value = "";
     }
 
@@ -751,10 +754,12 @@
     }
 
     function applyUserBox() {
-      const avatar = state.user?.Profile_Image_URL || state.linkedMember?.Profile_Image_URL || defaultAvatar();
+      const avatar = state.linkedMember?.Profile_Image_URL || state.user?.Profile_Image_URL || defaultAvatar();
       document.getElementById("sidebarAvatar").src = avatar;
       document.getElementById("sidebarUserName").textContent = state.user?.Full_Name || "-";
-      document.getElementById("sidebarUserRole").textContent = `${state.user?.Role || "-"} • ${state.user?.Email || "-"}`;
+      const roleText = state.user?.Role || "MEMBER";
+      const extraText = state.linkedMember?.Member_Code || state.user?.Email || "-";
+      document.getElementById("sidebarUserRole").textContent = `${roleText} • ${extraText}`;
     }
 
     function refreshCurrent() {
@@ -809,7 +814,7 @@
       tbody.innerHTML = rows.map(r => `
         <tr>
           <td><img class="avatar" style="width:52px;height:52px;border-width:2px;margin:0;" src="${escapeHtml(r.Profile_Image_URL || defaultAvatar())}" alt=""></td>
-          <td>${escapeHtml(r.Member_ID || "-")}</td>
+          <td>${escapeHtml(r.Member_Code || r.Member_ID || "-")}</td>
           <td>
             <strong>${escapeHtml(r.Full_Name_Thai || "-")}</strong><br>
             <span class="subtitle">${escapeHtml(r.Full_Name_English || "")}</span>
@@ -927,8 +932,9 @@
 
     async function loadMemberPortal() {
       const data = await apiGet("getMemberPortal", {
-        userId: state.user.User_ID,
-        role: state.user.Role
+        userId: state.user.User_ID || "",
+        role: state.user.Role || "MEMBER",
+        linkedMemberId: state.linkedMember?.Member_ID || ""
       });
 
       const member = data.member || {};
@@ -937,9 +943,10 @@
 
       document.getElementById("memberAvatarLarge").src = member.Profile_Image_URL || state.user.Profile_Image_URL || defaultAvatar();
       document.getElementById("memberNameText").textContent = member.Full_Name_Thai || "-";
-      document.getElementById("memberCodeText").textContent = `${member.Member_ID || "-"} • ${member.Email || "-"}`;
+      document.getElementById("memberCodeText").textContent = `${member.Member_Code || member.Member_ID || "-"} • ${member.Email || "-"}`;
 
       document.getElementById("memberInfoBox").innerHTML = `
+        <div class="detail-row"><div class="detail-key">รหัสสมาชิก</div><div>${escapeHtml(member.Member_Code || member.Member_ID || "-")}</div></div>
         <div class="detail-row"><div class="detail-key">ชื่อสมาชิก</div><div>${escapeHtml(member.Full_Name_Thai || "-")}</div></div>
         <div class="detail-row"><div class="detail-key">โทรศัพท์</div><div>${escapeHtml(member.Phone || "-")}</div></div>
         <div class="detail-row"><div class="detail-key">ที่อยู่</div><div>${escapeHtml(member.Address || "-")}</div></div>
@@ -979,7 +986,7 @@
       }
     }
 
-    document.getElementById("loginEmail").addEventListener("keydown", function(e){
+    document.getElementById("loginIdentifier").addEventListener("keydown", function(e){
       if (e.key === "Enter") login();
     });
     document.getElementById("loginPassword").addEventListener("keydown", function(e){
