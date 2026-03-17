@@ -30,7 +30,6 @@
       color:var(--text);
     }
     .hidden{display:none!important}
-
     .login-page{
       min-height:100vh;
       display:grid;
@@ -45,26 +44,11 @@
       box-shadow:var(--shadow);
       padding:28px;
     }
-    .title{
-      text-align:center;
-      margin-bottom:18px;
-    }
-    .title h1{
-      margin:0;
-      color:var(--primary);
-      font-size:32px;
-    }
-    .title p{
-      margin:8px 0 0;
-      color:var(--muted);
-      font-size:15px;
-    }
-    label{
-      display:block;
-      margin-bottom:6px;
-      font-weight:600;
-    }
-    input, select{
+    .title{text-align:center;margin-bottom:18px}
+    .title h1{margin:0;color:var(--primary);font-size:32px}
+    .title p{margin:8px 0 0;color:var(--muted);font-size:15px}
+    label{display:block;margin-bottom:6px;font-weight:600}
+    input, select, textarea{
       width:100%;
       border:1px solid var(--line);
       border-radius:14px;
@@ -74,31 +58,23 @@
       outline:none;
       background:#fff;
     }
-    input:focus, select:focus{
+    textarea{min-height:90px;resize:vertical}
+    input:focus, select:focus, textarea:focus{
       border-color:var(--primary-2);
       box-shadow:0 0 0 3px rgba(31,78,120,.08);
     }
     .stack{display:grid;gap:14px}
     .btn{
-      border:none;
-      border-radius:14px;
-      padding:13px 16px;
-      font-size:15px;
-      font-weight:700;
-      cursor:pointer;
-      font-family:inherit;
+      border:none;border-radius:14px;padding:13px 16px;
+      font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
     }
     .btn-primary{background:var(--primary);color:#fff}
     .btn-light{background:#eaf1f8;color:var(--primary)}
-    .msg{color:var(--muted);font-size:14px}
+    .btn-danger{background:#c0392b;color:#fff}
+    .msg{color:var(--muted);font-size:14px;line-height:1.7}
     .demo{
-      background:#f8fbff;
-      border:1px dashed #c9d8e8;
-      border-radius:14px;
-      padding:12px;
-      font-size:14px;
-      color:#52677d;
-      line-height:1.8;
+      background:#f8fbff;border:1px dashed #c9d8e8;border-radius:14px;
+      padding:12px;font-size:14px;color:#52677d;line-height:1.8;
     }
 
     .app{
@@ -131,14 +107,8 @@
       font-size:24px;
       font-weight:700;
     }
-    .brand h2{
-      margin:0;
-      font-size:18px;
-      line-height:1.3;
-    }
-    .brand small{
-      opacity:.85;
-    }
+    .brand h2{margin:0;font-size:18px;line-height:1.3}
+    .brand small{opacity:.85}
     .userbox{
       background:rgba(255,255,255,.09);
       border:1px solid rgba(255,255,255,.15);
@@ -148,54 +118,27 @@
       text-align:center;
     }
     .avatar{
-      width:86px;
-      height:86px;
-      border-radius:50%;
-      object-fit:cover;
-      border:4px solid rgba(255,255,255,.2);
-      background:#fff;
-      margin:0 auto 10px;
-      display:block;
+      width:86px;height:86px;border-radius:50%;object-fit:cover;
+      border:4px solid rgba(255,255,255,.2);background:#fff;
+      margin:0 auto 10px;display:block;
     }
     .user-name{font-weight:700}
     .user-role{font-size:13px;opacity:.88}
     .menu{display:grid;gap:8px}
     .menu button{
-      width:100%;
-      background:transparent;
-      color:#fff;
-      border:none;
-      text-align:left;
-      border-radius:12px;
-      padding:12px 14px;
-      cursor:pointer;
-      font-size:14px;
+      width:100%;background:transparent;color:#fff;border:none;
+      text-align:left;border-radius:12px;padding:12px 14px;
+      cursor:pointer;font-size:14px;
     }
-    .menu button:hover,.menu button.active{
-      background:rgba(255,255,255,.14);
-    }
+    .menu button:hover,.menu button.active{background:rgba(255,255,255,.14)}
 
-    .main{
-      padding:24px;
-      min-width:0;
-    }
+    .main{padding:24px;min-width:0}
     .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:18px;
-      flex-wrap:wrap;
+      display:flex;justify-content:space-between;align-items:center;
+      gap:12px;margin-bottom:18px;flex-wrap:wrap;
     }
-    .topbar h2{
-      margin:0;
-      font-size:26px;
-    }
-    .subtitle{
-      color:var(--muted);
-      margin-top:4px;
-      font-size:14px;
-    }
+    .topbar h2{margin:0;font-size:26px}
+    .subtitle{color:var(--muted);margin-top:4px;font-size:14px}
 
     .card{
       background:var(--card);
@@ -212,82 +155,83 @@
       gap:16px;
       margin-bottom:18px;
     }
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+    }
     .grid-2{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:16px;
     }
-    .stat .label{
-      color:var(--muted);
-      font-size:13px;
-      margin-bottom:8px;
-    }
-    .stat .value{
-      font-size:30px;
-      font-weight:700;
-      color:var(--primary);
-    }
-    .table-wrap{
-      overflow:auto;
-      border:1px solid var(--line);
-      border-radius:16px;
-    }
+    .stat .label{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .stat .value{font-size:30px;font-weight:700;color:var(--primary)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
     table{
-      width:100%;
-      border-collapse:collapse;
-      background:#fff;
-      min-width:800px;
+      width:100%;border-collapse:collapse;background:#fff;min-width:980px;
     }
     th,td{
-      padding:12px;
-      border-bottom:1px solid #eef3f8;
-      text-align:left;
-      font-size:14px;
-      vertical-align:top;
+      padding:12px;border-bottom:1px solid #eef3f8;text-align:left;
+      font-size:14px;vertical-align:top;
     }
-    th{
-      background:#f8fbff;
-      color:#4d6074;
-    }
+    th{background:#f8fbff;color:#4d6074}
     .pill{
-      display:inline-block;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
+      display:inline-block;padding:5px 10px;border-radius:999px;
+      font-size:12px;font-weight:700;
     }
     .green{background:#e8f7ee;color:var(--green)}
     .blue{background:#eaf3fb;color:var(--primary)}
     .orange{background:#fff3e6;color:var(--orange)}
     .red{background:#fdecec;color:var(--red)}
     .gray{background:#edf2f7;color:#5f7083}
-    .detail{
-      display:grid;
-      gap:10px;
-    }
+    .detail{display:grid;gap:10px}
     .detail-row{
-      display:grid;
-      grid-template-columns:180px 1fr;
-      gap:10px;
-      padding:10px 0;
-      border-bottom:1px dashed #e3ebf3;
+      display:grid;grid-template-columns:180px 1fr;gap:10px;
+      padding:10px 0;border-bottom:1px dashed #e3ebf3;
     }
     .detail-key{color:var(--muted);font-weight:600}
-    .empty{
-      color:var(--muted);
-      text-align:center;
-      padding:20px;
+    .empty{color:var(--muted);text-align:center;padding:20px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap}
+    .mini-avatar{
+      width:48px;height:48px;border-radius:50%;object-fit:cover;background:#fff;border:1px solid #dbe5ef;
     }
 
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(14,27,42,.42);
+      display:none;align-items:center;justify-content:center;
+      padding:20px;z-index:9999;
+    }
+    .modal-backdrop.show{display:flex}
+    .modal{
+      width:min(100%,980px);
+      max-height:90vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:22px;
+      box-shadow:0 20px 50px rgba(0,0,0,.2);
+      padding:22px;
+    }
+    .modal-header{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;
+    }
+    .modal-header h3{margin:0}
+    .modal-actions{
+      display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap;
+    }
+
+    @media (max-width: 1100px){
+      .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .grid-2{grid-template-columns:1fr}
+    }
     @media (max-width: 960px){
       .app{grid-template-columns:1fr}
       .sidebar{position:relative;height:auto}
-      .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .grid-2{grid-template-columns:1fr}
     }
     @media (max-width: 640px){
       .main{padding:14px}
-      .grid-4{grid-template-columns:1fr}
+      .grid-4,.grid-3{grid-template-columns:1fr}
       .detail-row{grid-template-columns:1fr}
       .title h1{font-size:28px}
     }
@@ -364,8 +308,9 @@
           <h2 id="pageTitle">ระบบ</h2>
           <div id="pageSubtitle" class="subtitle">-</div>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div class="toolbar">
           <button class="btn btn-light" onclick="refreshCurrent()">รีเฟรช</button>
+          <button id="addMemberBtn" class="btn btn-primary hidden" onclick="openCreateMemberModal()">เพิ่มสมาชิก</button>
         </div>
       </div>
 
@@ -424,10 +369,11 @@
                   <th>อีเมล</th>
                   <th>เบอร์</th>
                   <th>สถานะ</th>
+                  <th>จัดการ</th>
                 </tr>
               </thead>
               <tbody id="adminMembersTbody">
-                <tr><td colspan="6" class="empty">ยังไม่มีข้อมูล</td></tr>
+                <tr><td colspan="7" class="empty">ยังไม่มีข้อมูล</td></tr>
               </tbody>
             </table>
           </div>
@@ -591,23 +537,130 @@
     </main>
   </div>
 
+  <!-- MEMBER MODAL -->
+  <div id="memberModalBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="memberModalTitle">เพิ่มสมาชิก</h3>
+        <button class="btn btn-light" onclick="closeMemberModal()">ปิด</button>
+      </div>
+
+      <input type="hidden" id="formMemberId">
+
+      <div class="grid-3">
+        <div>
+          <label>รหัสสมาชิก</label>
+          <input id="formMemberCode" placeholder="เช่น MB00009 หรือปล่อยว่างให้ใช้รหัสอัตโนมัติ">
+        </div>
+        <div>
+          <label>รหัสผ่าน</label>
+          <input id="formPassword" placeholder="เช่น 123456">
+        </div>
+        <div>
+          <label>สถานะ</label>
+          <select id="formStatus">
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </div>
+
+        <div>
+          <label>ชื่อภาษาไทย</label>
+          <input id="formFullNameThai" placeholder="ชื่อ-นามสกุลภาษาไทย">
+        </div>
+        <div>
+          <label>ชื่อภาษาอังกฤษ</label>
+          <input id="formFullNameEnglish" placeholder="ชื่อภาษาอังกฤษ">
+        </div>
+        <div>
+          <label>ชื่อเล่น</label>
+          <input id="formNickname" placeholder="ชื่อเล่น">
+        </div>
+
+        <div>
+          <label>เลขบัตรประชาชน</label>
+          <input id="formNationalId" placeholder="เลขบัตรประชาชน">
+        </div>
+        <div>
+          <label>วันเกิด</label>
+          <input id="formBirthDate" type="date">
+        </div>
+        <div>
+          <label>เพศ</label>
+          <select id="formGender">
+            <option value="">- เลือก -</option>
+            <option value="ชาย">ชาย</option>
+            <option value="หญิง">หญิง</option>
+          </select>
+        </div>
+
+        <div>
+          <label>โทรศัพท์</label>
+          <input id="formPhone" placeholder="เบอร์โทรศัพท์">
+        </div>
+        <div>
+          <label>อีเมล</label>
+          <input id="formEmail" placeholder="อีเมลสำหรับ login">
+        </div>
+        <div>
+          <label>ความเกี่ยวข้อง</label>
+          <input id="formChurchRelation" placeholder="เช่น สมาชิกคริสตจักร">
+        </div>
+
+        <div style="grid-column:1 / -1;">
+          <label>ที่อยู่</label>
+          <textarea id="formAddress" placeholder="ที่อยู่"></textarea>
+        </div>
+
+        <div>
+          <label>ลิงก์รูปโปรไฟล์</label>
+          <input id="formProfileImageUrl" placeholder="https://...">
+        </div>
+        <div>
+          <label>ชื่อผู้ติดต่อฉุกเฉิน</label>
+          <input id="formEmergencyName" placeholder="ชื่อผู้ติดต่อฉุกเฉิน">
+        </div>
+        <div>
+          <label>เบอร์ผู้ติดต่อฉุกเฉิน</label>
+          <input id="formEmergencyPhone" placeholder="เบอร์ผู้ติดต่อฉุกเฉิน">
+        </div>
+
+        <div style="grid-column:1 / -1;">
+          <label>หมายเหตุ</label>
+          <textarea id="formNotes" placeholder="หมายเหตุเพิ่มเติม"></textarea>
+        </div>
+      </div>
+
+      <div id="memberFormMsg" class="msg" style="margin-top:14px;"></div>
+
+      <div class="modal-actions">
+        <button class="btn btn-light" onclick="closeMemberModal()">ยกเลิก</button>
+        <button id="memberSaveBtn" class="btn btn-primary" onclick="saveMember()">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzXUC7RqAjvmZy5nFKjiQpyCWPcXIasN4S6PiRgmkW7U6AFUt7K11RtddOUTl1kvr4F/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxN4xb63kHDO3gjA-7G7v-PPyaoSk-5GeRtNhByaP6qO0UKbISbJITzxxBH87V1yEt6/exec";
 
     const state = {
       user: null,
       linkedMember: null,
       config: {},
-      currentSection: ""
+      currentSection: "",
+      currentMemberRows: []
     };
 
     function jsonp(url, params = {}) {
       return new Promise((resolve, reject) => {
         const callbackName = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
         const script = document.createElement("script");
-        const query = new URLSearchParams({ ...params, callback: callbackName });
+        const query = new URLSearchParams({ ...params, callback: callbackName, _: Date.now().toString() });
+
+        let finished = false;
 
         window[callbackName] = function(response) {
+          finished = true;
           cleanup();
           resolve(response);
         };
@@ -618,17 +671,18 @@
         }
 
         script.onerror = function() {
+          if (finished) return;
           cleanup();
-          reject(new Error("JSONP request failed"));
+          reject(new Error("โหลด Web App ไม่สำเร็จ"));
         };
 
         script.src = `${url}?${query.toString()}`;
         document.body.appendChild(script);
 
         setTimeout(() => {
-          if (window[callbackName]) {
+          if (!finished) {
             cleanup();
-            reject(new Error("Request timeout"));
+            reject(new Error("Web App ไม่ตอบกลับภายในเวลาที่กำหนด"));
           }
         }, 20000);
       });
@@ -638,6 +692,17 @@
       const res = await jsonp(WEB_APP_URL, { mode, ...params });
       if (!res || !res.ok) throw new Error(res?.error || "API error");
       return res.data;
+    }
+
+    async function apiPost(payload) {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data || !data.ok) throw new Error(data?.error || "API error");
+      return data.data;
     }
 
     function escapeHtml(str) {
@@ -654,6 +719,16 @@
       const d = new Date(v);
       if (isNaN(d.getTime())) return String(v);
       return d.toLocaleDateString("th-TH");
+    }
+
+    function toDateInputValue(v) {
+      if (!v) return "";
+      const d = new Date(v);
+      if (isNaN(d.getTime())) return "";
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
     }
 
     function baht(v) {
@@ -702,6 +777,7 @@
       const identifier = document.getElementById("loginIdentifier").value.trim();
       const password = document.getElementById("loginPassword").value.trim();
       const msg = document.getElementById("loginMsg");
+
       msg.textContent = "กำลังเข้าสู่ระบบ...";
 
       try {
@@ -720,11 +796,13 @@
         if (role === "ADMIN" || role === "STAFF") {
           document.getElementById("adminMenu").classList.remove("hidden");
           document.getElementById("memberMenu").classList.add("hidden");
+          document.getElementById("addMemberBtn").classList.remove("hidden");
           showSection("adminDashboardSection", document.querySelector("#adminMenu button"));
           await loadAdminDashboard();
         } else {
           document.getElementById("memberMenu").classList.remove("hidden");
           document.getElementById("adminMenu").classList.add("hidden");
+          document.getElementById("addMemberBtn").classList.add("hidden");
           showSection("memberHomeSection", document.querySelector("#memberMenu button"));
           await loadMemberPortal();
         }
@@ -740,6 +818,7 @@
       state.linkedMember = null;
       state.config = {};
       state.currentSection = "";
+      state.currentMemberRows = [];
       document.getElementById("appShell").classList.add("hidden");
       document.getElementById("loginPage").classList.remove("hidden");
       document.getElementById("loginMsg").textContent = "";
@@ -804,16 +883,18 @@
       const q = document.getElementById("memberSearch").value.trim();
       const data = await apiGet("getAdminMembers", { role: state.user.Role, q });
       const rows = data.rows || [];
+      state.currentMemberRows = rows;
+
       const tbody = document.getElementById("adminMembersTbody");
 
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="6" class="empty">ไม่พบข้อมูลสมาชิก</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="empty">ไม่พบข้อมูลสมาชิก</td></tr>`;
         return;
       }
 
       tbody.innerHTML = rows.map(r => `
         <tr>
-          <td><img class="avatar" style="width:52px;height:52px;border-width:2px;margin:0;" src="${escapeHtml(r.Profile_Image_URL || defaultAvatar())}" alt=""></td>
+          <td><img class="mini-avatar" src="${escapeHtml(r.Profile_Image_URL || defaultAvatar())}" alt=""></td>
           <td>${escapeHtml(r.Member_Code || r.Member_ID || "-")}</td>
           <td>
             <strong>${escapeHtml(r.Full_Name_Thai || "-")}</strong><br>
@@ -822,6 +903,9 @@
           <td>${escapeHtml(r.Email || "-")}</td>
           <td>${escapeHtml(r.Phone || "-")}</td>
           <td>${pill(r.Status || "-")}</td>
+          <td>
+            <button class="btn btn-light" onclick="openEditMemberModal('${escapeHtml(r.Member_ID || '')}')">แก้ไข</button>
+          </td>
         </tr>
       `).join("");
     }
@@ -986,11 +1070,141 @@
       }
     }
 
+    function clearMemberForm() {
+      document.getElementById("formMemberId").value = "";
+      document.getElementById("formMemberCode").value = "";
+      document.getElementById("formPassword").value = "";
+      document.getElementById("formFullNameThai").value = "";
+      document.getElementById("formFullNameEnglish").value = "";
+      document.getElementById("formNickname").value = "";
+      document.getElementById("formNationalId").value = "";
+      document.getElementById("formBirthDate").value = "";
+      document.getElementById("formGender").value = "";
+      document.getElementById("formAddress").value = "";
+      document.getElementById("formPhone").value = "";
+      document.getElementById("formEmail").value = "";
+      document.getElementById("formChurchRelation").value = "";
+      document.getElementById("formProfileImageUrl").value = "";
+      document.getElementById("formEmergencyName").value = "";
+      document.getElementById("formEmergencyPhone").value = "";
+      document.getElementById("formNotes").value = "";
+      document.getElementById("formStatus").value = "ACTIVE";
+      document.getElementById("memberFormMsg").textContent = "";
+    }
+
+    function openCreateMemberModal() {
+      clearMemberForm();
+      document.getElementById("memberModalTitle").textContent = "เพิ่มสมาชิก";
+      document.getElementById("memberSaveBtn").textContent = "บันทึกสมาชิก";
+      document.getElementById("memberModalBackdrop").classList.add("show");
+    }
+
+    async function openEditMemberModal(memberId) {
+      clearMemberForm();
+      document.getElementById("memberModalTitle").textContent = "แก้ไขสมาชิก";
+      document.getElementById("memberSaveBtn").textContent = "บันทึกการแก้ไข";
+      document.getElementById("memberModalBackdrop").classList.add("show");
+
+      try {
+        const data = await apiGet("getMemberById", {
+          role: state.user.Role,
+          memberId
+        });
+
+        const m = data.member || {};
+        document.getElementById("formMemberId").value = m.Member_ID || "";
+        document.getElementById("formMemberCode").value = m.Member_Code || "";
+        document.getElementById("formPassword").value = m.Password || "";
+        document.getElementById("formFullNameThai").value = m.Full_Name_Thai || "";
+        document.getElementById("formFullNameEnglish").value = m.Full_Name_English || "";
+        document.getElementById("formNickname").value = m.Nickname || "";
+        document.getElementById("formNationalId").value = m.National_ID || "";
+        document.getElementById("formBirthDate").value = toDateInputValue(m.Birth_Date);
+        document.getElementById("formGender").value = m.Gender || "";
+        document.getElementById("formAddress").value = m.Address || "";
+        document.getElementById("formPhone").value = m.Phone || "";
+        document.getElementById("formEmail").value = m.Email || "";
+        document.getElementById("formChurchRelation").value = m.Church_Relation || "";
+        document.getElementById("formProfileImageUrl").value = m.Profile_Image_URL || "";
+        document.getElementById("formEmergencyName").value = m.Emergency_Contact_Name || "";
+        document.getElementById("formEmergencyPhone").value = m.Emergency_Contact_Phone || "";
+        document.getElementById("formNotes").value = m.Notes || "";
+        document.getElementById("formStatus").value = m.Status || "ACTIVE";
+      } catch (err) {
+        document.getElementById("memberFormMsg").textContent = "โหลดข้อมูลสมาชิกไม่สำเร็จ: " + err.message;
+      }
+    }
+
+    function closeMemberModal() {
+      document.getElementById("memberModalBackdrop").classList.remove("show");
+    }
+
+    async function saveMember() {
+      const memberId = document.getElementById("formMemberId").value.trim();
+      const payload = {
+        action: memberId ? "updateMember" : "createMember",
+        roleActor: state.user.Role,
+        actorName: state.user.Full_Name,
+        actorUserId: state.user.User_ID,
+        Member_ID: memberId,
+        Member_Code: document.getElementById("formMemberCode").value.trim(),
+        Password: document.getElementById("formPassword").value.trim(),
+        Full_Name_Thai: document.getElementById("formFullNameThai").value.trim(),
+        Full_Name_English: document.getElementById("formFullNameEnglish").value.trim(),
+        Nickname: document.getElementById("formNickname").value.trim(),
+        National_ID: document.getElementById("formNationalId").value.trim(),
+        Birth_Date: document.getElementById("formBirthDate").value.trim(),
+        Gender: document.getElementById("formGender").value,
+        Address: document.getElementById("formAddress").value.trim(),
+        Phone: document.getElementById("formPhone").value.trim(),
+        Email: document.getElementById("formEmail").value.trim(),
+        Church_Relation: document.getElementById("formChurchRelation").value.trim(),
+        Profile_Image_URL: document.getElementById("formProfileImageUrl").value.trim(),
+        Emergency_Contact_Name: document.getElementById("formEmergencyName").value.trim(),
+        Emergency_Contact_Phone: document.getElementById("formEmergencyPhone").value.trim(),
+        Notes: document.getElementById("formNotes").value.trim(),
+        Status: document.getElementById("formStatus").value
+      };
+
+      const msg = document.getElementById("memberFormMsg");
+      msg.textContent = "กำลังบันทึก...";
+
+      try {
+        await apiPost(payload);
+        msg.textContent = "บันทึกสำเร็จ";
+        await loadAdminMembers();
+        setTimeout(() => {
+          closeMemberModal();
+        }, 500);
+      } catch (err) {
+        msg.textContent = "บันทึกไม่สำเร็จ: " + err.message;
+      }
+    }
+
+    function refreshCurrent() {
+      const role = String(state.user?.Role || "").toUpperCase();
+      if (role === "ADMIN" || role === "STAFF") {
+        if (state.currentSection === "adminMembersSection") return loadAdminMembers();
+        if (state.currentSection === "adminPlotsSection") return loadAdminPlots();
+        if (state.currentSection === "adminContractsSection") return loadAdminContracts();
+        if (state.currentSection === "contractDetailSection") return loadContractDetailByInput();
+        return loadAdminDashboard();
+      }
+      return loadMemberPortal();
+    }
+
     document.getElementById("loginIdentifier").addEventListener("keydown", function(e){
       if (e.key === "Enter") login();
     });
+
     document.getElementById("loginPassword").addEventListener("keydown", function(e){
       if (e.key === "Enter") login();
+    });
+
+    document.getElementById("memberModalBackdrop").addEventListener("click", function(e){
+      if (e.target.id === "memberModalBackdrop") {
+        closeMemberModal();
+      }
     });
   </script>
 </body>
